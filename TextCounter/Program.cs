@@ -19,9 +19,11 @@ namespace TextCounter
                 string URL = "";
                 URL = Console.ReadLine();
                 HtmlParser parser = new HtmlParser();
+                Cleaner cleaner = new Cleaner();
                 parser.SetWebSource(URL);
                 var text = parser.Parse();
-                foreach(string textParagraph in text)
+                var text2 = cleaner.Cleane(text);
+                foreach(string textParagraph in text2)
                     Console.WriteLine(textParagraph);
 
                 Console.ReadKey();
