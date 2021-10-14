@@ -30,7 +30,7 @@ namespace TextCounter
 
         public List<string> Parse()
         {
-            var nodes = doc.DocumentNode.SelectNodes("//text()");
+            var nodes = doc.DocumentNode.SelectNodes("//body//text()[not(ancestor::script)]");
             List<string> nodesText = nodes.Select(node => node.InnerText).ToList();
 
             return nodesText;

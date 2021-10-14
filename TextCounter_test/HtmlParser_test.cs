@@ -16,12 +16,17 @@ namespace TextCounter_test
             return @"
                 <!DOCTYPE html>
                 <html>
+                <head>
+                    Головной тег
+                </head>
                 <body>
+                    <script>Скрипт</script>
 	                <h1>Заголовок</h1>
 	                <h2>Заголовок 2</h2>
                     <p> Текст </p>
                     <br> абзац <i>Красивый</i>
                 </body>
+                <
                 </html>
                     ";
         }
@@ -44,7 +49,7 @@ namespace TextCounter_test
         [TestCase("абзац")]
         [TestCase("Красивый")]
         public void 
-        GetText_ParseTextHTMLTag_ReturnTagText(string text)
+        Parse_ParseTextHTMLTag_ReturnTagText(string text)
         {
             HtmlParser parser = new HtmlParser();
             parser.SetStringSource(HTMLText());
@@ -57,7 +62,7 @@ namespace TextCounter_test
         [TestCase("Заголовок Заголовок 2")]
         [TestCase("абзац Красивый")]
         public void
-        GetText_ParseTextHTMLTag_NotContaintText(string text)
+        Parse_ParseTextHTMLTag_NotContaintText(string text)
         {
             HtmlParser parser = new HtmlParser();
             parser.SetStringSource(HTMLText());
@@ -66,5 +71,20 @@ namespace TextCounter_test
 
             Assert.IsFalse(textNodes.Exists(node => node.Contains(text)), "Текст из двух тегов попал в один тег");
         }
+
+        [TestCase("Головной тег")]
+        [TestCase("Скрипт")]
+        public void
+        Parse_ParseOnlyText_NotContainTextOtherTag(string notContain)
+        {
+            HtmlParser parser = new HtmlParser();
+            parser.SetStringSource(HTMLText());
+
+            List<string> textNodes = parser.Parse();
+
+            Assert.IsFalse(textNodes.Exists(node => node.Contains(notContain)), "Среди текста не должно быть текста из других скриптов (CSS, Script)");
+        }
+
+
     }
 }
