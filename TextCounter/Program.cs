@@ -21,6 +21,7 @@ namespace TextCounter
                 HtmlParser parser = new HtmlParser();
                 Cleaner cleaner = new Cleaner();
                 WordSplitter splitter = new WordSplitter();
+                WordCounter counter = new WordCounter();
 
                 parser.SetWebSource(URL);
                 var text = parser.Parse();
@@ -32,6 +33,10 @@ namespace TextCounter
 
                 foreach (string textParagraph in text3.OrderBy(obj => obj))
                     Console.WriteLine(textParagraph);
+
+                var countWord = counter.Count(text3);
+                foreach (var dictPair in countWord.OrderByDescending(obj => obj.Value))
+                    Console.WriteLine("Word:{0} Count:{1}", dictPair.Key, dictPair.Value);
 
                 Console.ReadKey();
                 Console.Clear();
