@@ -22,19 +22,15 @@ namespace TextCounter
                 Cleaner cleaner = new Cleaner();
                 WordSplitter splitter = new WordSplitter();
                 WordCounter counter = new WordCounter();
+                CaseInsensitive unifying = new CaseInsensitive();
 
                 parser.SetWebSource(URL);
                 var text = parser.Parse();
-                Console.WriteLine("{0} Count Element {1}", "text", text.Count);
                 var text2 = cleaner.Cleane(text);
-                Console.WriteLine("{0} Count Element {1}", "text2", text2.Count);
-                var text3 = splitter.Split(text2);
-                Console.WriteLine("{0} Count Element {1}", "text3", text3.Count);
+                var text3 = unifying.Unify(text2);
+                var text4 = splitter.Split(text3);
 
-                foreach (string textParagraph in text3.OrderBy(obj => obj))
-                    Console.WriteLine(textParagraph);
-
-                var countWord = counter.Count(text3);
+                var countWord = counter.Count(text4);
                 foreach (var dictPair in countWord.OrderByDescending(obj => obj.Value))
                     Console.WriteLine("Word:{0} Count:{1}", dictPair.Key, dictPair.Value);
 
