@@ -50,7 +50,7 @@ namespace TextCounter
             prepareList.Add(new CaseInsensitive());
             
 
-            CounterTemplate template = new CounterTemplate(new HtmlParser(), prepareList);
+            CounterTemplate template = new CounterTemplate(new HtmlParser(), prepareList, null);
             string URL = "";
             URL = Console.ReadLine();
 

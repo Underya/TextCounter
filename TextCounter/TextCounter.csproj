@@ -54,6 +54,7 @@
     <Compile Include="HtmlParser.cs" />
     <Compile Include="IHTMLWebSource.cs" />
     <Compile Include="IPrepare.cs" />
+    <Compile Include="IWordCounter.cs" />
     <Compile Include="PrepareException.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

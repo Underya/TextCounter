@@ -13,15 +13,16 @@ namespace TextCounter_test
     {
         CounterTemplate TemplateWithStub(List<string> HTMLReturns = null)
         {
-            var webSourceMock = new Mock<IHTMLWebSource>();
-            webSourceMock.Setup(obj => obj.Parse()).Returns(HTMLReturns ?? new List<string> { });
-            var PrepareMock = new Mock<IPrepare>();
-            return new CounterTemplate(webSourceMock.Object, new List<IPrepare> { PrepareMock.Object});
+            var webSourceStub = new Mock<IHTMLWebSource>();
+            webSourceStub.Setup(obj => obj.Parse()).Returns(HTMLReturns ?? new List<string> { });
+            var PreapareStub = new Mock<IPrepare>();
+            var WordCounterStub = new Mock<IWordCounter>();
+            return new CounterTemplate(webSourceStub.Object, new List<IPrepare> { PreapareStub.Object}, WordCounterStub.Object);
         }
 
         [Test]
         public void
-        Start_GetURLToParser_SetURLSource()
+        StartParse_GetURLToParser_SetURLSource()
         {
             CounterTemplate template = TemplateWithStub();
             var parserMock = new Mock<IHTMLWebSource>();
@@ -35,7 +36,7 @@ namespace TextCounter_test
 
         [Test]
         public void
-        Start_GetHTMLSource_CallHTMLSource()
+        StartParse_GetHTMLSource_CallHTMLSource()
         {
             CounterTemplate template = TemplateWithStub();
             var parserMock = new Mock<IHTMLWebSource>();
@@ -49,7 +50,7 @@ namespace TextCounter_test
 
         [Test]
         public void
-        Start_ThrowExcrption_ThrowSameException()
+        StartParse_ThrowExcrption_ThrowSameException()
         {
             CounterTemplate template = TemplateWithStub();
             var parseStub = new Mock<IHTMLWebSource>();
@@ -61,7 +62,7 @@ namespace TextCounter_test
 
         [Test]
         public void
-        Start_CallPrepare_CallAllPrepare()
+        StartParse_CallPrepare_CallAllPrepare()
         {
             CounterTemplate template = TemplateWithStub(new List<string> { "word" });
             var prepareMock1 = new Mock<IPrepare>(); prepareMock1.Setup(obj => obj.Prepare(It.IsAny<IEnumerable<string>>())).Returns(new List<string> { "word" });
@@ -78,7 +79,7 @@ namespace TextCounter_test
 
         [Test]
         public void
-        Start_PrepareReturn0Word_TwoPreapreNotCall()
+        StartParse_PrepareReturn0Word_TwoPreapreNotCall()
         {
             CounterTemplate template = TemplateWithStub(new List<string> { "word" });
             var prepareMock1 = new Mock<IPrepare>(); prepareMock1.Setup(obj => obj.Prepare(It.IsAny<IEnumerable<string>>())).Returns(new List<string> ());
@@ -92,7 +93,7 @@ namespace TextCounter_test
 
         [Test]
         public void
-        Start_1PrepareRerturn3Word_2PrepareCall3()
+        StartParse_1PrepareRerturn3Word_2PrepareCall3()
         {
             CounterTemplate template = TemplateWithStub(new List<string> { "word" });
             var prepareMock1 = new Mock<IPrepare>(); prepareMock1.Setup(obj => obj.Prepare(It.IsAny<IEnumerable<string>>())).Returns(new List<string> {"1", "2", "3" });
@@ -106,7 +107,7 @@ namespace TextCounter_test
 
         [Test]
         public void
-        Start_ParserReturn0Word_PreparedNotCall()
+        StartParse_ParserReturn0Word_PreparedNotCall()
         {
             CounterTemplate template = TemplateWithStub(new List<string> ( ));
             var prepareMock1 = new Mock<IPrepare>(); 
@@ -123,7 +124,7 @@ namespace TextCounter_test
 
         [Test]
         public void
-        Start_RarseThrowExceptionParse_NotThrow()
+        StartParse_RarseThrowExceptionParse_NotThrow()
         {
             CounterTemplate template = TemplateWithStub(new List<string> { "word" });
             var prepareMock = new Mock<IPrepare>();
@@ -135,7 +136,7 @@ namespace TextCounter_test
 
         [Test]
         public void
-        Start_RarseThrowException_ThrowException()
+        StartParse_RarseThrowException_ThrowException()
         {
             CounterTemplate template = TemplateWithStub(new List<string> { "word" });
             var prepareMock = new Mock<IPrepare>();
@@ -143,6 +144,24 @@ namespace TextCounter_test
             template.PreparesList = new List<IPrepare> { prepareMock.Object };
 
             Assert.Throws<Exception>(() => template.StartParse("test"));
+        }
+
+        [Test]
+        public void
+        StartParse_CallWordCounter_CallWith3Word()
+        {
+            CounterTemplate template = TemplateWithStub(new List<string> { "word" });
+            var prepareStab = new Mock<IPrepare>();
+            List<string> prepareWordList = new List<string> { "w1", "w2", "w3" };
+            prepareStab.Setup(obj => obj.Prepare(It.IsAny<IEnumerable<string>>())).Returns(prepareWordList);
+
+            template.PreparesList = new List<IPrepare> { prepareStab.Object };
+            var wordCounterMock = new Mock<IWordCounter>();
+            template.WordCounter = wordCounterMock.Object;
+
+            template.StartParse("test");
+
+            wordCounterMock.Verify(obj => obj.Count(prepareWordList), Times.Once);
         }
     }
 }

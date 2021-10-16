@@ -9,21 +9,24 @@ namespace TextCounter
     //Класс реализует шаблон программирования стратегия (template)
     public class CounterTemplate
     {
-        public CounterTemplate(IHTMLWebSource webSource, IEnumerable<IPrepare> prepares)
+        public CounterTemplate(IHTMLWebSource webSource, IEnumerable<IPrepare> prepares, IWordCounter wordCounter)
         {
             Source = webSource;
             PreparesList = prepares.ToList();
+            WordCounter = wordCounter;
         }
 
         public IHTMLWebSource Source { get; set; }
         public string URL { get; protected set; }
         public List<IPrepare> PreparesList { get; set; }
+        public IWordCounter WordCounter { get; set; }
 
         public void StartParse(string URL)
         {
             this.URL = URL;
             List<string> orignString = Parse(URL);
             List<string> preparedWords = Prepare(orignString);
+            Dictionary<string, int> CountedWords = WordCounter.Count(preparedWords);
         }
         List<string> Parse(string URI)
         {

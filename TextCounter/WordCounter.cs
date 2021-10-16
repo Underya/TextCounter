@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace TextCounter
 {
-    public class WordCounter
+    public class WordCounter:
+        IWordCounter
     {
         public Dictionary<string, int> Count(IEnumerable<string> wordList)
         {
