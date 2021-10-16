@@ -50,7 +50,9 @@
   <ItemGroup>
     <Compile Include="CaseInsensitive.cs" />
     <Compile Include="Cleaner.cs" />
+    <Compile Include="CounterTemplate.cs" />
     <Compile Include="HtmlParser.cs" />
+    <Compile Include="IHTMLWebSource.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WordCounter.cs" />

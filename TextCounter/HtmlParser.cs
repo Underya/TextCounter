@@ -8,7 +8,8 @@ using HtmlAgilityPack;
 
 namespace TextCounter
 {
-    public class HtmlParser
+    public class HtmlParser:
+        IHTMLWebSource
     {
         HtmlDocument doc = new HtmlDocument();
 

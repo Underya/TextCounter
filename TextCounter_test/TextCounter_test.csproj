@@ -72,6 +72,7 @@
   <ItemGroup>
     <Compile Include="CaseInsensitive_test.cs" />
     <Compile Include="Cleaner_test.cs" />
+    <Compile Include="CounterTemplate_test.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="HtmlParser_test.cs" />
     <Compile Include="WordCounter_test.cs" />

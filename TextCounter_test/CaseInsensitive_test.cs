@@ -5,6 +5,7 @@ using TextCounter;
 
 using Moq;
 using NUnit.Framework;
+
 namespace TextCounter_test
 {
     [TestFixture]
