@@ -21,8 +21,8 @@ namespace TextCounter
                 HtmlParser parser = new HtmlParser();
                 Cleaner cleaner = new Cleaner();
                 WordSplitter splitter = new WordSplitter();
-                WordCounter counter = new WordCounter();
                 CaseInsensitive unifying = new CaseInsensitive();
+                WordCounter counter = new WordCounter();
 
                 parser.SetWebSource(URL);
                 var text = parser.Parse();

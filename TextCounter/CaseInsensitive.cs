@@ -8,13 +8,6 @@ namespace TextCounter
 {
     public class CaseInsensitive
     {
-        public string Unify(string word)
-        {
-            //Важный момент. К каком регистру приводить слова
-            //Я выбрал нижний, т.к. чаще всего в слове 1 буква в верхнем регистре
-            return word.ToLower();
-        }
-
         public List<string> Unify(IEnumerable<string> words)
         {
             List<string> unifyingWords = new List<string>();
@@ -23,6 +16,12 @@ namespace TextCounter
                 unifyingWords.Add(Unify(word));
 
             return unifyingWords;
+        }
+        public string Unify(string word)
+        {
+            //Важный момент. К каком регистру приводить слова
+            //Я выбрал нижний, т.к. чаще всего в слове 1 буква в верхнем регистре
+            return word.ToLower();
         }
     }
 }
