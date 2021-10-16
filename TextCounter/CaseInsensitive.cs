@@ -6,8 +6,13 @@ using System.Threading.Tasks;
 
 namespace TextCounter
 {
-    public class CaseInsensitive
+    public class CaseInsensitive:
+            IPrepare
     {
+        public List<string> Prepare(IEnumerable<string> text)
+        {
+            return Unify(text);
+        }
         public List<string> Unify(IEnumerable<string> words)
         {
             List<string> unifyingWords = new List<string>();

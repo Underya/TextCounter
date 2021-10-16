@@ -6,8 +6,13 @@ using System.Threading.Tasks;
 
 namespace TextCounter
 {
-    public class Cleaner
+    public class Cleaner:
+        IPrepare
     {
+        public List<string> Prepare(IEnumerable<string> text)
+        {
+            return Cleane(text);
+        }
         public List<string> Cleane(IEnumerable<string> dirtyLines)
         {
             List<string> cleaneString = new List<string>();
@@ -22,5 +27,6 @@ namespace TextCounter
         {
             return orignString.Trim();
         }
+        
     }
 }

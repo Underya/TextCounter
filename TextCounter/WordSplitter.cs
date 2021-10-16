@@ -6,11 +6,16 @@ using System.Threading.Tasks;
 
 namespace TextCounter
 {
-    public class WordSplitter
+    public class WordSplitter:
+        IPrepare
     {
         readonly char[] SplitterConst = new char[] { ' ', ',', '.', '!', '?', '\"', ';', ':', '[', ']', '(', ')', '\n', '\r', '\t'};
 
-        public List<string> Split(List<string> orignsStrings)
+        public List<string> Prepare(IEnumerable<string> text)
+        {
+            return Split(text);
+        }
+        public List<string> Split(IEnumerable<string> orignsStrings)
         {
             List<string> ReturnedWords = new List<string>();
 

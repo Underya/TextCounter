@@ -14,6 +14,9 @@ namespace TextCounter
             ServicePointManager.Expect100Continue = true;
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
+            NewMethod();
+            return;
+
             while (true)
             {
                 string URL = "";
@@ -37,6 +40,22 @@ namespace TextCounter
                 Console.ReadKey();
                 Console.Clear();
             }
+        }
+
+        private static void NewMethod()
+        {
+            var prepareList = new List<IPrepare>();
+            prepareList.Add(new Cleaner());
+            prepareList.Add(new WordSplitter());
+            prepareList.Add(new CaseInsensitive());
+            
+
+            CounterTemplate template = new CounterTemplate(new HtmlParser(), prepareList);
+            string URL = "";
+            URL = Console.ReadLine();
+
+            template.StartParse(URL);
+
         }
     }
 }
