@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace TextCounter
 {
-    public class Cleaner:
+    public class Cleaner :
         IPrepare
     {
         public List<string> Prepare(IEnumerable<string> text)
@@ -17,8 +13,8 @@ namespace TextCounter
         {
             List<string> cleaneString = new List<string>();
 
-            foreach(string str in dirtyLines)
-                if(!string.IsNullOrEmpty(str))
+            foreach (string str in dirtyLines)
+                if (!string.IsNullOrEmpty(str))
                     cleaneString.Add(Cleane(str));
 
             return cleaneString;
@@ -27,6 +23,6 @@ namespace TextCounter
         {
             return orignString.Trim();
         }
-        
+
     }
 }

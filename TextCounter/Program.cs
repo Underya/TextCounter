@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Net;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net;
 
 namespace TextCounter
 {
@@ -55,7 +53,7 @@ namespace TextCounter
             string URL = "";
             URL = Console.ReadLine();
 
-            template.StartParse(URL);
+            template.ParseAndCount(URL);
 
         }
     }

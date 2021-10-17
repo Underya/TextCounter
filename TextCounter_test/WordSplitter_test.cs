@@ -1,16 +1,12 @@
-﻿using System;
+﻿using NUnit.Framework;
 using System.Collections.Generic;
-
 using TextCounter;
-
-using Moq;
-using NUnit.Framework;
 
 namespace TextCounter_test
 {
 
     [TestFixture]
-    public class 
+    public class
     WordSplitter_test
     {
         WordSplitter GetSplitter()
@@ -41,8 +37,8 @@ namespace TextCounter_test
 
             List<string> splitterWord = splitter.Split(OrignString);
 
-            Assert.Contains( "word1", splitterWord, "Не разедлил по символу:" + separatorCharacter);
-            Assert.Contains( "word2", splitterWord, "Не разедлил по символу:" + separatorCharacter);
+            Assert.Contains("word1", splitterWord, "Не разедлил по символу:" + separatorCharacter);
+            Assert.Contains("word2", splitterWord, "Не разедлил по символу:" + separatorCharacter);
         }
 
         [Test]
@@ -65,7 +61,7 @@ namespace TextCounter_test
         Split_SplitListString_Return6Word()
         {
             WordSplitter splitter = GetSplitter();
-            List<string> OrignsStrings = new List<string> { "w1 . w2", "w3 ,! w4", "w5 ?\" w6"};
+            List<string> OrignsStrings = new List<string> { "w1 . w2", "w3 ,! w4", "w5 ?\" w6" };
 
             List<string> splitterWord = splitter.Split(OrignsStrings);
 

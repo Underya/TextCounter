@@ -1,10 +1,6 @@
-﻿using System;
+﻿using NUnit.Framework;
 using System.Collections.Generic;
-
 using TextCounter;
-
-using Moq;
-using NUnit.Framework;
 
 namespace TextCounter_test
 {
@@ -32,7 +28,7 @@ namespace TextCounter_test
         }
 
         [Test]
-        public void 
+        public void
         LoadFromString_SetSource_ReturnHtmlText()
         {
             HtmlParser parser = new HtmlParser();
@@ -42,20 +38,20 @@ namespace TextCounter_test
             Assert.AreEqual(HTMLText(), parser.OrignHtml());
         }
 
-      
+
         [TestCase("Заголовок")]
         [TestCase("Заголовок 2")]
         [TestCase("Текст")]
         [TestCase("абзац")]
         [TestCase("Красивый")]
-        public void 
+        public void
         Parse_ParseTextHTMLTag_ReturnTagText(string text)
         {
             HtmlParser parser = new HtmlParser();
             parser.SetStringSource(HTMLText());
 
             List<string> textNodes = parser.Parse();
-             
+
             Assert.IsTrue(textNodes.Exists(node => node.Contains(text)), "Не найден текст из тега");
         }
 

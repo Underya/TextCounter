@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TextCounter
 {
-    public class WordSplitter:
+    public class WordSplitter :
         IPrepare
     {
-        readonly char[] SplitterConst = new char[] { ' ', ',', '.', '!', '?', '\"', ';', ':', '[', ']', '(', ')', '\n', '\r', '\t'};
+        readonly char[] SplitterConst = new char[] { ' ', ',', '.', '!', '?', '\"', ';', ':', '[', ']', '(', ')', '\n', '\r', '\t' };
 
         public List<string> Prepare(IEnumerable<string> text)
         {
@@ -38,6 +35,6 @@ namespace TextCounter
             return words.Where(obj => !string.IsNullOrEmpty(obj)).ToList();
         }
 
-        
+
     }
 }

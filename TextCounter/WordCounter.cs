@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace TextCounter
 {
-    public class WordCounter:
+    public class WordCounter :
         IWordCounter
     {
         public Dictionary<string, int> Count(IEnumerable<string> wordList)

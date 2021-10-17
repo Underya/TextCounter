@@ -1,10 +1,6 @@
-﻿using System;
+﻿using NUnit.Framework;
 using System.Collections.Generic;
-
 using TextCounter;
-
-using Moq;
-using NUnit.Framework;
 
 namespace TextCounter_test
 {
@@ -27,7 +23,7 @@ namespace TextCounter_test
         public void
         Unify_UnifyMultipleString_ReturnAllStringToLowerCase()
         {
-            List<string> words = new List<string> {"abC", "аБв" };
+            List<string> words = new List<string> { "abC", "аБв" };
             CaseInsensitive unifyingWord = new CaseInsensitive();
 
             var returnedWords = unifyingWord.Unify(words);

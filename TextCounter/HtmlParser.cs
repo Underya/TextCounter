@@ -1,14 +1,10 @@
-﻿using System;
+﻿using HtmlAgilityPack;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using HtmlAgilityPack;
 
 namespace TextCounter
 {
-    public class HtmlParser:
+    public class HtmlParser :
         IHTMLWebSource
     {
         HtmlDocument doc = new HtmlDocument();

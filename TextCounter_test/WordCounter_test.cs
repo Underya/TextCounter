@@ -1,10 +1,6 @@
-﻿using System;
+﻿using NUnit.Framework;
 using System.Collections.Generic;
-
 using TextCounter;
-
-using Moq;
-using NUnit.Framework;
 
 namespace TextCounter_test
 {
@@ -17,14 +13,14 @@ namespace TextCounter_test
         Counter_CounterOneWord_ReturnSameWord()
         {
             WordCounter counter = new WordCounter();
-            List<string> wordList = new List<string> { "word1", "word2", "word1"};
+            List<string> wordList = new List<string> { "word1", "word2", "word1" };
 
             Dictionary<string, int> keyCount = counter.Count(wordList);
 
             Assert.Contains("word1", keyCount.Keys);
             Assert.Contains("word2", keyCount.Keys);
         }
-        
+
         [Test]
         public void
         Counter_CounterWord_ReturnRightCountWords()

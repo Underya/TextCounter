@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TextCounter
 {
@@ -22,7 +20,7 @@ namespace TextCounter
         public IWordCounter WordCounter { get; set; }
         public List<IRecipientWord> RecipientList { get; set; } = new List<IRecipientWord>();
 
-        public Dictionary<string, int> StartParse(string URL)
+        public Dictionary<string, int> ParseAndCount(string URL)
         {
             this.URL = URL;
             List<string> orignString = Parse(URL);
@@ -38,7 +36,8 @@ namespace TextCounter
             {
                 List<string> orignString = NotSaveParse(URI);
                 return orignString;
-            } catch(Exception exp)
+            }
+            catch (Exception exp)
             {
                 //1. Считаю, что если здесь происходит ошибка - мы ничего сделать не можем. 
                 //   Остаётся только закончить работу класса
@@ -59,8 +58,8 @@ namespace TextCounter
         {
             List<string> oldResult = orignString;
             List<string> NewResult = new List<string>();
-            
-            foreach(IPrepare preapre in PreparesList)
+
+            foreach (IPrepare preapre in PreparesList)
             {
                 OldResultPrepare(oldResult, NewResult, preapre);
 
@@ -86,12 +85,14 @@ namespace TextCounter
             try
             {
                 return NotSavePrepareWord(preapre, adapterStringToIEnumerable);
-            } catch(PrepareException prepareException)
+            }
+            catch (PrepareException prepareException)
             {
                 //Если мы не смогли подготовить одно слово - всё ок, парсим дальше
                 //TODO: Логирование
                 return new List<string>();
-            } catch(Exception excp)
+            }
+            catch (Exception excp)
             {
                 //Если какая та другая проблема - закончить работу
                 //TODO: Логирование
@@ -118,12 +119,13 @@ namespace TextCounter
             try
             {
                 NotSafeRecipient(URL, CountedWords, recipient);
-            } catch(Exception excp)
+            }
+            catch (Exception excp)
             {
                 //Если что-то у получателей пошло не так - это их проблемы
                 //TODO:здесь должно быть логирование
             }
-            
+
         }
         void NotSafeRecipient(string URL, Dictionary<string, int> CountedWords, IRecipientWord recipient)
         {
