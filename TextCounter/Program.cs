@@ -48,9 +48,10 @@ namespace TextCounter
             prepareList.Add(new Cleaner());
             prepareList.Add(new WordSplitter());
             prepareList.Add(new CaseInsensitive());
-            
+            var recipientList = new List<IRecipientWord> { new ShowConsoleResult() };
 
-            CounterTemplate template = new CounterTemplate(new HtmlParser(), prepareList, null);
+            CounterTemplate template = new CounterTemplate(new HtmlParser(), prepareList, new WordCounter());
+            template.RecipientList = recipientList;
             string URL = "";
             URL = Console.ReadLine();
 

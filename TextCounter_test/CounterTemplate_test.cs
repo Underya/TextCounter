@@ -11,12 +11,14 @@ namespace TextCounter_test
     [TestFixture]
     public class CounterTemplate_test
     {
-        CounterTemplate TemplateWithStub(List<string> HTMLReturns = null)
+        CounterTemplate TemplateWithStub(List<string> HTMLReturns = null, List<string> PrepareReturns = null, Dictionary<string, int> WordCounter = null)
         {
             var webSourceStub = new Mock<IHTMLWebSource>();
             webSourceStub.Setup(obj => obj.Parse()).Returns(HTMLReturns ?? new List<string> { });
             var PreapareStub = new Mock<IPrepare>();
+            PreapareStub.Setup(obj => obj.Prepare(It.IsAny<IEnumerable<string>>())).Returns(PrepareReturns ?? new List<string>());
             var WordCounterStub = new Mock<IWordCounter>();
+            WordCounterStub.Setup(obj => obj.Count(It.IsAny<IEnumerable<string>>())).Returns(WordCounter ?? new Dictionary<string, int>());
             return new CounterTemplate(webSourceStub.Object, new List<IPrepare> { PreapareStub.Object}, WordCounterStub.Object);
         }
 
@@ -162,6 +164,75 @@ namespace TextCounter_test
             template.StartParse("test");
 
             wordCounterMock.Verify(obj => obj.Count(prepareWordList), Times.Once);
+        }
+
+        [Test]
+        public void
+        StartParse_WordCounterThrowException_NotCathException()
+        {
+            CounterTemplate template = TemplateWithStub(new List<string> { "word" }, new List<string> { "word" });
+            var WordCounterStub = new Mock<IWordCounter>();
+            WordCounterStub.Setup(obj => obj.Count(It.IsAny<IEnumerable<string>>())).Throws(new Exception());
+            template.WordCounter = WordCounterStub.Object;
+
+            Assert.Throws<Exception>(()=> template.StartParse("test"));
+        }
+
+        [Test]
+        public void
+        StartParse_GetResult_CallALLRecipient()
+        {
+            Dictionary<string, int> wordCount = new Dictionary<string, int>(); wordCount["word"] = 1;
+            CounterTemplate template = TemplateWithStub(new List<string> { "word" }, new List<string> { "word" }, wordCount);
+            var IResultRecipientMock1 = new Mock<IRecipientWord>();
+            var IResultRecipientMock2 = new Mock<IRecipientWord>();
+            template.RecipientList = new List<IRecipientWord> { IResultRecipientMock1.Object, IResultRecipientMock2.Object };
+
+            template.StartParse("test");
+
+            IResultRecipientMock1.Verify(obj => obj.SetResult(It.IsAny<string>(), It.IsAny<Dictionary<string, int>>()), Times.Once);
+            IResultRecipientMock2.Verify(obj => obj.SetResult(It.IsAny<string>(), It.IsAny<Dictionary<string, int>>()), Times.Once);
+        }
+
+        [Test]
+        public void
+        StartParse_GetResult_GetRightResult()
+        {
+            Dictionary<string, int> wordCount = new Dictionary<string, int>(); wordCount["word"] = 1;
+            CounterTemplate template = TemplateWithStub(new List<string> { "word" }, new List<string> { "word" }, wordCount);
+            var IResultRecipientMock1 = new Mock<IRecipientWord>();
+            var IResultRecipientMock2 = new Mock<IRecipientWord>();
+            template.RecipientList = new List<IRecipientWord> { IResultRecipientMock1.Object, IResultRecipientMock2.Object };
+
+            template.StartParse("test");
+
+            IResultRecipientMock1.Verify(obj => obj.SetResult("test", wordCount));
+            IResultRecipientMock2.Verify(obj => obj.SetResult("test", wordCount));
+        }
+
+        [Test]
+        public void
+        StartParse_RecipientThrowException_CathcException()
+        {
+            Dictionary<string, int> wordCount = new Dictionary<string, int>(); wordCount["word"] = 1;
+            CounterTemplate template = TemplateWithStub(new List<string> { "word" }, new List<string> { "word" }, wordCount);
+            var IResultRecipientStub = new Mock<IRecipientWord>();
+            IResultRecipientStub.Setup(obj => obj.SetResult("test", wordCount)).Throws(new Exception());
+            template.RecipientList = new List<IRecipientWord> { IResultRecipientStub.Object };
+
+            template.StartParse("test");
+        }
+
+        [Test]
+        public void
+        StartParse_ReturnResult_ReturnDicitionary()
+        {
+            Dictionary<string, int> wordCount = new Dictionary<string, int>(); wordCount["word"] = 3; wordCount["word2"] = 2;
+            CounterTemplate template = TemplateWithStub(new List<string> { "word" }, new List<string> { "word" }, wordCount);
+
+            var result = template.StartParse("test");
+
+            Assert.AreEqual(wordCount, result);
         }
     }
 }

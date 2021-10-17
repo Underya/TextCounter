@@ -16,18 +16,22 @@ namespace TextCounter
             WordCounter = wordCounter;
         }
 
-        public IHTMLWebSource Source { get; set; }
         public string URL { get; protected set; }
-        public List<IPrepare> PreparesList { get; set; }
+        public IHTMLWebSource Source { get; set; }
+        public List<IPrepare> PreparesList { get; set; } = new List<IPrepare>();
         public IWordCounter WordCounter { get; set; }
+        public List<IRecipientWord> RecipientList { get; set; } = new List<IRecipientWord>();
 
-        public void StartParse(string URL)
+        public Dictionary<string, int> StartParse(string URL)
         {
             this.URL = URL;
             List<string> orignString = Parse(URL);
             List<string> preparedWords = Prepare(orignString);
-            Dictionary<string, int> CountedWords = WordCounter.Count(preparedWords);
+            Dictionary<string, int> CountedWords = Counter(preparedWords);
+            GetResult(URL, CountedWords);
+            return CountedWords;
         }
+
         List<string> Parse(string URI)
         {
             try
@@ -97,6 +101,33 @@ namespace TextCounter
         List<string> NotSavePrepareWord(IPrepare preapre, string[] adapterStringToIEnumerable)
         {
             return preapre.Prepare(adapterStringToIEnumerable);
+        }
+
+        Dictionary<string, int> Counter(List<string> preparedWords)
+        {
+            return WordCounter.Count(preparedWords);
+        }
+
+        void GetResult(string URL, Dictionary<string, int> CountedWords)
+        {
+            foreach (IRecipientWord recipient in RecipientList)
+                GetResultToRecipient(URL, CountedWords, recipient);
+        }
+        void GetResultToRecipient(string URL, Dictionary<string, int> CountedWords, IRecipientWord recipient)
+        {
+            try
+            {
+                NotSafeRecipient(URL, CountedWords, recipient);
+            } catch(Exception excp)
+            {
+                //Если что-то у получателей пошло не так - это их проблемы
+                //TODO:здесь должно быть логирование
+            }
+            
+        }
+        void NotSafeRecipient(string URL, Dictionary<string, int> CountedWords, IRecipientWord recipient)
+        {
+            recipient.SetResult(URL, CountedWords);
         }
     }
 }
